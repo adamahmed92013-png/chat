@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MONSTER'• CLAN | Imperial Dragon Sanctuary</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        * { font-family: 'Cairo', sans-serif; box-sizing: border-box; }
+        body { 
+            background: #000205;
+            background-image: 
+                radial-gradient(circle at 50% -20%, rgba(37, 99, 235, 0.28) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(239, 68, 68, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.18) 0%, transparent 40%),
+                linear-gradient(to bottom, #000103, #000000);
+            color: #bfdbfe; 
+            overflow-x: hidden; 
+            min-height: 100vh; 
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000000; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #1d4ed8, #3b82f6, #1d4ed8); border-radius: 4px; }
+        
+        .neon-text-blue { text-shadow: 0 0 20px rgba(59, 130, 246, 0.95), 0 0 40px rgba(37, 99, 235, 0.7), 0 0 60px rgba(37, 99, 235, 0.4); }
+        
+        .bg-grid-imperial {
+            background-image: linear-gradient(to right, rgba(59, 130, 246, 0.04) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        @keyframes imperialGlow {
+            0% { filter: drop-shadow(0 0 15px rgba(37,99,235,0.4)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 40px rgba(59,130,246,0.9)); transform: scale(1.02); }
+            100% { filter: drop-shadow(0 0 15px rgba(37,99,235,0.4)); transform: scale(1); }
+        }
+        .imperial-glow { animation: imperialGlow 3.5s infinite ease-in-out; }
+
+        @keyframes dragonEnergy {
+            0% { width: 0%; filter: drop-shadow(0 0 10px #2563eb); }
+            50% { filter: drop-shadow(0 0 30px #60a5fa); }
+            100% { width: 100%; filter: drop-shadow(0 0 20px #93c5fd); }
+        }
+        .energy-bar-imperial { animation: dragonEnergy 3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+        .imperial-card {
+            background: linear-gradient(135deg, rgba(2, 6, 23, 0.95) 0%, rgba(1, 2, 8, 0.99) 100%);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.95), inset 0 1px 2px rgba(147, 197, 253, 0.25), inset 0 -1px 0 rgba(30, 58, 138, 0.5);
+        }
+        .imperial-card-admin {
+            background: linear-gradient(135deg, rgba(15, 2, 2, 0.95) 0%, rgba(2, 3, 10, 0.99) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.45);
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.95), inset 0 1px 2px rgba(239, 68, 68, 0.3);
+        }
+        .imperial-input {
+            background: rgba(1, 3, 10, 0.95);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            color: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .imperial-input:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 35px rgba(59, 130, 246, 0.7);
+            outline: none;
+        }
+        .choice-imperial {
+            background: linear-gradient(145deg, rgba(3, 12, 35, 0.85) 0%, rgba(1, 3, 10, 0.98) 100%);
+            border: 2px solid rgba(59, 130, 246, 0.35);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .choice-imperial:hover {
+            border-color: rgba(96, 165, 250, 0.9);
+            background: linear-gradient(145deg, rgba(12, 30, 70, 0.98) 0%, rgba(2, 6, 18, 0.99) 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 45px rgba(37, 99, 235, 0.45);
+        }
+        .choice-imperial.selected {
+            border-color: #60a5fa;
+            background: linear-gradient(145deg, rgba(18, 45, 105, 0.98) 0%, rgba(2, 10, 30, 0.99) 100%);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.8), inset 0 0 20px rgba(37, 99, 235, 0.5);
+            transform: scale(1.01);
+        }
+        .page-transition { animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #copy-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: linear-gradient(135deg, #020617, #000000);
+            border: 1px solid #3b82f6;
+            color: #93c5fd;
+            padding: 14px 28px;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(37,99,235,0.6);
+            font-weight: 900;
+            font-size: 14px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        #copy-toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body class="bg-grid-imperial text-blue-200 flex flex-col justify-between min-h-screen select-none">
+
+    <!-- Toast Notification -->
+    <div id="copy-toast">
+        <i class="fa-solid fa-circle-check text-blue-400 text-xl"></i>
+        <span>تم نسخ الـ ID بنجاح إلى الحافظة الملكية!</span>
+    </div>
+
+    <!-- ==================== IMPERIAL LOADING SCREEN ==================== -->
+    <div id="loading-screen" class="fixed inset-0 z-40 bg-[#000000] flex flex-col items-center justify-center px-4 transition-opacity duration-1000">
+        <div class="flex justify-between items-center w-full max-w-5xl mb-8 px-4">
+            <div class="flex items-center gap-4 imperial-glow">
+                <div class="text-blue-500 text-5xl md:text-7xl filter drop-shadow-[0_0_35px_rgba(59,130,246,0.9)]">
+                    <i class="fa-solid fa-dragon"></i>
+                </div>
+                <div class="hidden sm:block">
+                    <span class="text-[10px] uppercase tracking-widest text-blue-400 font-black block">IMPERIAL SANCTUARY</span>
+                    <span class="text-lg font-black text-white">MONSTER ELITE</span>
+                </div>
+            </div>
+            <div class="text-center">
+                <h1 class="text-3xl md:text-5xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-white to-blue-500 neon-text-blue">
+                    MONSTER'• CLAN
+                </h1>
+                <p class="text-xs text-blue-400 font-bold mt-1.5 tracking-widest">👑 البوابة الملكية الفاخرة لكلان مونستر 👑</p>
+            </div>
+            <div class="flex items-center gap-4 flex-row-reverse imperial-glow">
+                <div class="text-blue-500 text-5xl md:text-7xl filter drop-shadow-[0_0_35px_rgba(59,130,246,0.9)]" style="transform: scaleX(-1);">
+                    <i class="fa-solid fa-dragon"></i>
+                </div>
+                <div class="hidden sm:block text-left">
+                    <span class="text-[10px] uppercase tracking-widest text-blue-400 font-black block">SUPREME POWER</span>
+                    <span class="text-lg font-black text-white">DRAGON THRONE</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full max-w-lg bg-[#010308] border border-blue-500/60 rounded-full h-8 p-1 relative overflow-hidden shadow-[0_0_40px_rgba(37,99,235,0.4)]">
+            <div id="energy-fill" class="energy-bar-imperial bg-gradient-to-r from-blue-700 via-blue-500 to-indigo-300 h-full rounded-full relative">
+                <div class="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)] animate-pulse"></div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center text-xs font-black tracking-wider text-white drop-shadow">
+                <span id="loading-percentage">0%</span> - يتم استدعاء القاعات الملكية الفاخرة...
+            </div>
+        </div>
+        <p class="text-blue-400/80 text-xs mt-4 tracking-widest animate-pulse text-center font-bold">💎 إعداد البريق الملكي وحماية البوابات الأسطورية...</p>
+    </div>
+
+    <!-- ==================== MAIN APPLICATION CONTAINER ==================== -->
+    <div id="main-app" class="hidden flex-grow flex flex-col relative z-10 w-full max-w-7xl mx-auto px-4 py-6">
+        
+        <!-- HEADER -->
+        <header class="imperial-card py-4 px-6 rounded-2xl mb-8 flex justify-between items-center shadow-2xl">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="goHome()">
+                <div class="w-13 h-13 rounded-2xl bg-gradient-to-br from-blue-700 via-blue-950 to-black flex items-center justify-center border border-blue-500/70 shadow-2xl imperial-glow group-hover:scale-105 transition">
+                    <i class="fa-solid fa-dragon text-blue-300 text-2xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl md:text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-200 to-blue-400">MONSTER'• CLAN</h2>
+                    <span class="text-[10px] text-blue-400 font-bold block tracking-widest">👑 IMPERIAL ESPORTS PORTAL 👑</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button onclick="directOpenAdmin()" class="bg-gradient-to-r from-black via-blue-950 to-blue-900 hover:from-blue-900 border border-blue-500/60 text-blue-200 hover:text-white px-5 py-2.5 rounded-xl text-xs md:text-sm font-black transition flex items-center gap-2 shadow-[0_0_25px_rgba(37,99,235,0.3)]">
+                    <i class="fa-solid fa-user-shield text-blue-400 animate-pulse"></i> لوحة الأدمن الملكية
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN DYNAMIC VIEWS -->
+        <main class="flex-grow flex items-center justify-center py-4">
+
+            <!-- VIEW 1: HOME & SELECTION -->
+            <div id="view-home" class="w-full max-w-5xl page-transition">
+                <div class="imperial-card p-8 md:p-14 rounded-3xl relative overflow-hidden shadow-2xl">
+                    <div class="absolute -top-16 -right-16 text-blue-600/10 text-9xl pointer-events-none"><i class="fa-solid fa-dragon"></i></div>
+                    <div class="absolute -bottom-16 -left-16 text-blue-600/10 text-9xl pointer-events-none" style="transform: scaleX(-1);"><i class="fa-solid fa-dragon"></i></div>
+
+                    <div class="text-center mb-6">
+                        <span class="inline-block px-8 py-2.5 rounded-full bg-black/90 border border-blue-500/50 text-blue-300 text-base md:text-lg font-black tracking-widest shadow-inner">
+                            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                        </span>
+                    </div>
+
+                    <div class="text-center max-w-3xl mx-auto mb-10">
+                        <h1 class="text-3xl md:text-5xl font-black text-white mb-4 neon-text-blue">
+                            البوابة الملكية لكلان MONSTER
+                        </h1>
+                        <p class="text-blue-300/90 text-sm md:text-base leading-relaxed font-semibold">
+                            صُممت هذه القاعة خصيصاً للنخبة. اختر مسارك أدناه للانضمام إلى العائلة أو متابعة حالة قبولك الملكي بالـ ID.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-6">
+                        <!-- Admin Response / Old Player Card -->
+                        <div onclick="selectSection('response')" class="choice-imperial p-8 rounded-3xl cursor-pointer text-center group border border-blue-500/40">
+                            <div class="w-20 h-20 bg-black/90 rounded-2xl flex items-center justify-center mx-auto mb-5 text-blue-400 text-3xl group-hover:scale-110 transition shadow-inner border border-blue-500/50">
+                                <i class="fa-solid fa-id-badge"></i>
+                            </div>
+                            <h3 class="text-xl font-black text-white mb-2">متابعة رد الأدمن الملكي</h3>
+                            <p class="text-xs text-blue-300/80 leading-relaxed font-semibold">أدخل الـ ID الخاص بك لمتابعة قرار القبول وحالة انضمامك للكلان الفاخر.</p>
+                        </div>
+
+                        <!-- New Player Card -->
+                        <div onclick="selectSection('new')" class="choice-imperial p-8 rounded-3xl cursor-pointer text-center group border border-blue-500/40">
+                            <div class="w-20 h-20 bg-black/90 rounded-2xl flex items-center justify-center mx-auto mb-5 text-blue-300 text-3xl group-hover:scale-110 transition shadow-inner border border-blue-500/50">
+                                <i class="fa-solid fa-user-plus"></i>
+                            </div>
+                            <h3 class="text-xl font-black text-white mb-2">تقديم كلاعب جديد (النخبة)</h3>
+                            <p class="text-xs text-blue-300/80 leading-relaxed font-semibold">إذا كنت ترغب بالانضمام لأول مرة، ابدأ الاختبار الملكي الآن واحصل على الكود التعريفي.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 2: CHECK ADMIN RESPONSE -->
+            <div id="view-response" class="w-full max-w-xl page-transition hidden">
+                <div class="imperial-card p-8 md:p-10 rounded-3xl border border-blue-500/60 shadow-2xl text-center">
+                    <div class="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto mb-6 border border-blue-500 shadow-inner">
+                        <i class="fa-solid fa-shield-halved text-3xl text-blue-400"></i>
+                    </div>
+                    <h2 class="text-2xl font-black text-white mb-2">الاستعلام برمز الـ ID الملكي</h2>
+                    <p class="text-blue-300/90 text-xs mb-6 leading-relaxed font-semibold">
+                        أدخل الـ ID الخاص بك لفتح القاعة الفورية:
+                    </p>
+                    
+                    <input type="text" id="check-id-input" placeholder="اكتب الـ ID هنا..." class="imperial-input w-full px-4 py-3.5 rounded-xl mb-4 text-center text-base font-bold">
+                    <button onclick="handleIdCheckOrAdmin()" class="w-full bg-gradient-to-r from-blue-700 to-blue-900 text-white font-black py-3.5 rounded-xl shadow-lg transition mb-4 hover:opacity-90 border border-blue-500/60">
+                        <i class="fa-solid fa-arrow-left ml-2"></i> تنفيذ التحقق الفاخر
+                    </button>
+
+                    <div id="check-result-box" class="mt-6 hidden p-5 rounded-2xl border"></div>
+
+                    <button onclick="goHome()" class="mt-6 text-blue-400 hover:text-blue-300 text-xs underline font-bold">العودة للرئيسية</button>
+                </div>
+            </div>
+
+            <!-- VIEW 3: 15-QUESTION TEST -->
+            <div id="view-questions" class="w-full max-w-4xl page-transition hidden">
+                <div class="imperial-card p-8 md:p-14 rounded-3xl border-2 border-blue-500/70 shadow-[0_25px_80px_rgba(37,99,235,0.25)] relative">
+                    
+                    <!-- Top Progress Bar & Counter -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 pb-6 border-b border-blue-950">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-black border border-blue-500/60 flex items-center justify-center text-blue-400 text-lg shadow-inner">
+                                <i class="fa-solid fa-crown"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-blue-400 font-black tracking-widest block uppercase">IMPERIAL TEST HALL</span>
+                                <span id="question-counter" class="text-base md:text-lg font-black text-white">السؤال 1 من 15</span>
+                            </div>
+                        </div>
+                        <div class="w-full sm:w-64 bg-black h-4 rounded-full overflow-hidden border border-blue-500/50 p-0.5 shadow-inner">
+                            <div id="form-progress-bar" class="bg-gradient-to-r from-blue-700 via-blue-500 to-indigo-300 h-full rounded-full transition-all duration-500 shadow-[0_0_15px_rgba(59,130,246,0.8)]" style="width: 6.66%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Question Text Box -->
+                    <div id="question-box" class="mb-10 min-h-[260px] flex flex-col justify-center"></div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-between items-center pt-6 border-t border-blue-950 gap-4">
+                        <button id="prev-btn" onclick="prevQuestion()" class="bg-black hover:bg-blue-950 text-blue-200 border-2 border-blue-500/50 px-7 py-3.5 rounded-2xl font-black text-sm md:text-base transition shadow-lg flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-right"></i> السابق
+                        </button>
+                        <button id="next-btn" onclick="nextQuestion()" class="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-900 hover:opacity-95 text-white px-10 py-3.5 rounded-2xl font-black text-sm md:text-base shadow-[0_10px_30px_rgba(37,99,235,0.5)] transition transform hover:scale-105 border-2 border-blue-400 flex items-center gap-2">
+                            التالي <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 4: SUCCESS WITH CLICK-TO-COPY ID -->
+            <div id="view-success" class="w-full max-w-lg page-transition hidden text-center">
+                <div class="imperial-card p-8 md:p-10 rounded-3xl border border-blue-500/80 shadow-2xl">
+                    <div class="w-24 h-24 bg-black rounded-full flex items-center justify-center mx-auto mb-6 border border-blue-500 shadow-inner animate-pulse">
+                        <i class="fa-solid fa-award text-5xl text-blue-400 neon-text-blue"></i>
+                    </div>
+                    <h2 class="text-2xl font-black text-white mb-2">تم تسجيل طلبك في السجلات الملكية</h2>
+                    <p class="text-blue-300/90 text-xs md:text-sm mb-4 leading-relaxed font-semibold">
+                        هذا هو الـ ID التعريفي الخاص بك. اضغط عليه لنسخه فوراً:
+                    </p>
+                    <div onclick="copyAssignedId()" id="assigned-id-display" class="bg-black border border-blue-500 p-4 rounded-2xl text-2xl font-black text-blue-300 mb-2 tracking-widest shadow-2xl cursor-pointer hover:bg-blue-950/40 transition flex items-center justify-center gap-3 group neon-text-blue">
+                        <span id="id-text-val">MS-XXXX</span>
+                        <i class="fa-regular fa-copy text-sm text-blue-400 group-hover:scale-125 transition"></i>
+                    </div>
+                    <p class="text-[11px] text-blue-400 mb-6 font-bold">(💎 انقر على الـ ID أعلاه للنسخ السريع)</p>
+                    <button onclick="goHome()" class="bg-gradient-to-r from-blue-700 to-blue-900 text-white font-black px-6 py-3 rounded-xl w-full shadow-lg transition border border-blue-500/60">
+                        <i class="fa-solid fa-house ml-2"></i> العودة للرئيسية
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW 5: LUXURY ADMIN DASHBOARD (MS60156611) WITH SEARCH & ALL RECORDS -->
+            <div id="view-admin" class="w-full max-w-6xl page-transition hidden">
+                <div class="imperial-card-admin p-6 md:p-8 rounded-3xl border border-blue-500/80 shadow-2xl">
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-6 pb-4 border-b border-blue-950 gap-4">
+                        <div>
+                            <h2 class="text-2xl font-black text-white flex items-center gap-3">
+                                <i class="fa-solid fa-crown text-blue-400 animate-pulse"></i> لوحة تحكم الأدمن الملكية الشاملة
+                            </h2>
+                            <p class="text-xs text-blue-300/80 mt-1 font-semibold">إدارة المتقدمين (المقبولين، المرفوضين، وقيد المراجعة) مع البحث بالـ ID أو الاسم</p>
+                        </div>
+                        <button onclick="goHome()" class="bg-black hover:bg-blue-950 text-blue-200 border border-blue-500/60 px-5 py-2.5 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-right-from-bracket ml-2"></i> خروج للرئيسية
+                        </button>
+                    </div>
+
+                    <!-- Admin Search Bar -->
+                    <div class="mb-6">
+                        <div class="relative">
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-blue-400">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+                            <input type="text" id="admin-search-input" oninput="renderAdminSubmissions()" placeholder="ابحث في السجلات (بالـ ID، بالاسم، أو اللعبة)..." class="imperial-input w-full pr-12 pl-4 py-3.5 rounded-2xl text-sm font-bold shadow-inner">
+                        </div>
+                    </div>
+
+                    <!-- Submissions Container -->
+                    <div id="admin-submissions-list" class="space-y-4 max-h-[550px] overflow-y-auto pr-2"></div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="text-center py-4 text-xs text-blue-400/80 font-bold border-t border-blue-950 mt-6">
+            MONSTER'• CLAN IMPERIAL SANCTUARY &copy; 2026 - ALL RIGHTS RESERVED.
+        </footer>
+    </div>
+
+    <!-- CUSTOM ALERT MODAL -->
+    <div id="custom-alert-modal" class="fixed inset-0 z-50 bg-black/95 flex items-center justify-center hidden p-4">
+        <div class="imperial-card p-6 rounded-2xl max-w-md w-full text-center border border-blue-500 shadow-2xl">
+            <div class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-500 shadow-inner">
+                <i class="fa-solid fa-triangle-exclamation text-3xl text-blue-400"></i>
+            </div>
+            <h3 class="text-xl font-black text-white mb-2">تنبيه ملكي هام</h3>
+            <p id="custom-alert-text" class="text-blue-200 text-sm mb-6 leading-relaxed font-semibold">يرجى إكمال الحقل أو الإجابة المطلوبة.</p>
+            <button onclick="closeCustomAlert()" class="bg-gradient-to-r from-blue-700 to-blue-900 text-white font-bold px-6 py-2.5 rounded-xl w-full shadow-lg border border-blue-500/60">حسناً، فهمت</button>
+        </div>
+    </div>
+
+    <!-- DETAIL VIEW MODAL FOR ADMIN WITH ID IN ANSWERS -->
+    <div id="admin-detail-modal" class="fixed inset-0 z-50 bg-black/95 flex items-center justify-center hidden p-4">
+        <div class="imperial-card p-6 md:p-8 rounded-3xl max-w-2xl w-full border border-blue-500 shadow-2xl max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-blue-950">
+                <h3 class="text-xl font-black text-white flex items-center gap-2">
+                    <i class="fa-solid fa-file-lines text-blue-400"></i> إجابات اللاعب التفصيلية
+                </h3>
+                <button onclick="copyModalId()" class="bg-blue-900 hover:bg-blue-800 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition border border-blue-400 flex items-center gap-2">
+                    <i class="fa-regular fa-copy"></i> نسخ الـ ID: <span id="modal-id-badge" class="font-black"></span>
+                </button>
+            </div>
+            <div id="admin-detail-content" class="space-y-3 mb-6 text-sm text-blue-200"></div>
+            <button onclick="closeAdminDetail()" class="bg-black hover:bg-blue-950 text-blue-200 border border-blue-500/60 px-6 py-2.5 rounded-xl font-bold w-full">إغلاق النافذة</button>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script>
+        const questionsData = [
+            { id: 1, title: "ما هو اسمك الحقيقي؟", type: "text", placeholder: "اكتب اسمك الثلاثي...", key: "realName" },
+            { id: 2, title: "ما هو اسمك أو الـ ID الخاص بك في لعبة فري فاير؟", type: "text", placeholder: "اكتب الآي دي داخل اللعبة...", key: "gameName" },
+            { id: 3, title: "ما هو بلد إقامتك الحالي؟", type: "text", placeholder: "مثال: مصر، السعودية، المغرب...", key: "country" },
+            { id: 4, title: "كم يبلغ ليفل (Level) حسابك في فري فاير؟", type: "text", placeholder: "مثال: ليفل 75...", key: "level" },
+            { id: 5, title: "هل تمتلك بطاقة تغيير الاسم في حسابك حالياً؟", type: "choice", options: ["نعم، أمتلك بطاقة تغيير اسم", "لا، لا أمتلك حالياً"], key: "nameChangeCard" },
+            { id: 6, title: "اختر مستوى البرايم (Prime) في حسابك من 1 إلى 8:", type: "prime_choice", options: ["1", "2", "3", "4", "5", "6", "7", "8"], key: "primeCam" },
+            { id: 7, title: "ما هو تخصصك أو وضع لعبك الأساسي في فري فاير؟", type: "choice", options: ["رشاشات وقائد هجوم (Rush)", "قناص محترف (Sniper)", "دعم وسكواد ليدر (Support)", "لاعب مرن (All-Rounder)"], key: "specialty" },
+            { id: 8, title: "كم عدد ساعات لعبك اليومية في فري فاير؟", type: "choice", options: ["من 1 إلى 3 ساعات", "من 4 إلى 6 ساعات", "أكثر من 6 ساعات (محترف متفرغ)"], key: "playHours" },
+            { id: 9, title: "هل تقبل قوانين الكلان الصارمة بخصوص التفاعل والبطولات؟", type: "choice", options: ["نعم أوافق بشدة وألتزم بالكامل", "لدي بعض الاستفسارات ولكن أوافق"], key: "rulesAgreement" },
+            { id: 10, title: "هل لديك خبرة سابقة في الانضمام لكلانات كبيرة ومنافسات البطولات؟", type: "choice", options: ["نعم، لدي خبرة ممتازة وشاركت ببطولات", "لا، هذه تجربتي الأولى ولكن مستواي قوي"], key: "experience" },
+            { id: 11, title: "هل تمتلك برنامج المايك وصوت واضح للتواصل أثناء اللعب الجماعي؟", type: "choice", options: ["نعم، مايك واضح تماماً", "لا يوجد مايك حالياً"], key: "micStatus" },
+            { id: 12, title: "ما هي ردة فعلِك عند خسارة جولة في البطولة مع السكواد؟", type: "choice", options: ["أشجع الفريق ونعوض الجولة القادمة بهدوء", "أصمت وأركز على الأخطاء دون عصبية", "أتحمس وأطلب الخطة البديلة فوراً"], key: "attitude" },
+            { id: 13, title: "هل تشارك في فعاليات شحن أو تفاعل الكلان اليومية؟", type: "choice", options: ["نعم أتفاعل وأشارك دائماً", "سأحاول الالتزام بالقدر المستطاع"], key: "clanActivity" },
+            { id: 14, title: "لماذا اخترت بالذات الانضمام إلى MONSTER'• CLAN دون غيره؟", type: "choice", options: ["لأنه كلان أسطوري وله سمعة قوية في القوة", "لأن أصدقائي فيه وأريد اللعب معكم", "لإثبات مهاراتي والوصول للقمة"], key: "reason" },
+            { id: 15, title: "كلمة أخيره توجهها لإدارة الكلان لتقنعنا بقبولك:", type: "text", placeholder: "اكتب رسالة قصيرة أو نبذة عن مهاراتك...", key: "finalWord" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let usedBackward = {};
+        let submissionsList = JSON.parse(localStorage.getItem('monster_submissions') || '[]');
+        let currentModalId = '';
+
+        // Loading Screen Animation
+        window.addEventListener('DOMContentLoaded', () => {
+            let percentage = 0;
+            const percentageEl = document.getElementById('loading-percentage');
+            const loadingScreen = document.getElementById('loading-screen');
+            const mainApp = document.getElementById('main-app');
+
+            const loadInterval = setInterval(() => {
+                percentage += 2;
+                if(percentageEl) percentageEl.textContent = percentage + '%';
+                if(percentage >= 100) {
+                    clearInterval(loadInterval);
+                    setTimeout(() => {
+                        loadingScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                            mainApp.classList.remove('hidden');
+                        }, 1000);
+                    }, 500);
+                }
+            }, 45);
+        });
+
+        function goHome() {
+            hideAllViews();
+            document.getElementById('view-home').classList.remove('hidden');
+        }
+
+        function hideAllViews() {
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-response').classList.add('hidden');
+            document.getElementById('view-questions').classList.add('hidden');
+            document.getElementById('view-success').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+        }
+
+        function selectSection(type) {
+            hideAllViews();
+            if(type === 'response') {
+                document.getElementById('view-response').classList.remove('hidden');
+            } else {
+                currentQuestionIndex = 0;
+                userAnswers = {};
+                usedBackward = {};
+                document.getElementById('view-questions').classList.remove('hidden');
+                renderQuestion();
+            }
+        }
+
+        function directOpenAdmin() {
+            hideAllViews();
+            document.getElementById('view-admin').classList.remove('hidden');
+            document.getElementById('admin-search-input').value = '';
+            renderAdminSubmissions();
+        }
+
+        function handleIdCheckOrAdmin() {
+            const inputVal = document.getElementById('check-id-input').value.trim().toUpperCase();
+            const resultBox = document.getElementById('check-result-box');
+            submissionsList = JSON.parse(localStorage.getItem('monster_submissions') || '[]');
+
+            if(!inputVal) {
+                showCustomAlert("⚠️ يرجى إدخال الـ ID الخاص بك.");
+                return;
+            }
+
+            if(inputVal === 'MS60156611') {
+                directOpenAdmin();
+                return;
+            }
+
+            const found = submissionsList.find(s => s.id.toUpperCase() === inputVal || s.answers.gameName.toUpperCase().includes(inputVal));
+
+            resultBox.classList.remove('hidden');
+            if(!found) {
+                resultBox.className = "mt-6 p-5 rounded-2xl border border-blue-500/50 bg-black text-blue-300 font-bold text-sm";
+                resultBox.innerHTML = `<i class="fa-solid fa-circle-xmark text-xl mb-2 block text-blue-400"></i> لم يتم العثور على طلب بهذا الـ ID. تأكد من صحة الرمز أو قم بالتسجيل كلاعب جديد.`;
+                return;
+            }
+
+            if(found.status === 'تم القبول') {
+                resultBox.className = "mt-6 p-5 rounded-2xl border border-blue-500 bg-black text-blue-200 text-sm";
+                resultBox.innerHTML = `
+                    <i class="fa-solid fa-circle-check text-2xl mb-2 text-blue-400 block neon-text-blue"></i>
+                    <p class="font-black text-base text-white mb-1">مبروك! تم قبولك في الكلان رسمياً.</p>
+                    <p class="text-xs text-blue-300 mb-3 font-semibold">كود العضوية الخاص بك: <span class="text-blue-400 font-bold">${found.id}</span></p>
+                    <a href="https://chat.whatsapp.com/KN5mqevS14zEkVyujvmHlB" target="_blank" class="inline-block bg-blue-700 hover:bg-blue-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow transition border border-blue-400">
+                        <i class="fa-brands fa-whatsapp ml-1"></i> اضغط هنا للانضمام لمجموعات الكلان الرسمية وإرسال سكرين القبول
+                    </a>
+                `;
+            } else if(found.status === 'تم الرفض') {
+                resultBox.className = "mt-6 p-5 rounded-2xl border border-blue-950 bg-black text-blue-400 text-sm";
+                resultBox.innerHTML = `
+                    <i class="fa-solid fa-ban text-2xl mb-2 text-blue-500 block"></i>
+                    <p class="font-black text-base text-white mb-1">عذراً، تم رفض الطلب من قبل الإدارة.</p>
+                    <p class="text-xs text-blue-300 font-semibold">كود العضوية: <span class="text-white font-bold">${found.id}</span> | نتمنى لك حظاً أوفر في المرات القادمة.</p>
+                `;
+            } else {
+                resultBox.className = "mt-6 p-5 rounded-2xl border border-blue-500/50 bg-black text-blue-200 text-sm";
+                resultBox.innerHTML = `
+                    <i class="fa-solid fa-clock text-2xl mb-2 text-blue-400 block"></i>
+                    <p class="font-black text-base text-white mb-1">طلبك قيد المراجعة الملكية حالياً.</p>
+                    <p class="text-xs text-blue-300 font-semibold">كود العضوية الخاص بك: <span class="text-blue-400 font-bold">${found.id}</span></p>
+                `;
+            }
+        }
+
+        function renderQuestion() {
+            const q = questionsData[currentQuestionIndex];
+            const box = document.getElementById('question-box');
+            const counter = document.getElementById('question-counter');
+            const progressBar = document.getElementById('form-progress-bar');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            counter.textContent = `السؤال ${currentQuestionIndex + 1} من ${questionsData.length}`;
+            progressBar.style.width = `${((currentQuestionIndex + 1) / questionsData.length) * 100}%`;
+
+            if(currentQuestionIndex === 0 || usedBackward[currentQuestionIndex]) {
+                prevBtn.style.opacity = '0.3';
+                prevBtn.style.pointerEvents = 'none';
+            } else {
+                prevBtn.style.opacity = '1';
+                prevBtn.style.pointerEvents = 'auto';
+            }
+
+            if(currentQuestionIndex === questionsData.length - 1) {
+                nextBtn.innerHTML = `إرسال وإنشاء الـ ID الملكي <i class="fa-solid fa-check ml-1"></i>`;
+            } else {
+                nextBtn.innerHTML = `التالي <i class="fa-solid fa-arrow-left mr-1"></i>`;
+            }
+
+            let html = `<h3 class="text-xl md:text-2xl font-black text-white mb-8 leading-relaxed tracking-wide flex items-start gap-3">
+                <span class="text-blue-400 text-lg mt-1"><i class="fa-solid fa-shield-cat"></i></span>
+                <span>${currentQuestionIndex + 1}. ${q.title}</span>
+            </h3>`;
+
+            if(q.type === 'text') {
+                const savedVal = userAnswers[q.key] || '';
+                html += `<div class="px-2">
+                    <input type="text" id="answer-input" value="${savedVal}" placeholder="${q.placeholder}" class="imperial-input w-full px-6 py-4 rounded-2xl text-base md:text-lg font-bold shadow-inner">
+                </div>`;
+            } else if(q.type === 'choice') {
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-1">`;
+                q.options.forEach((opt) => {
+                    const isSelected = userAnswers[q.key] === opt ? 'selected' : '';
+                    html += `
+                        <div onclick="selectChoice('${q.key}', '${opt}', this)" class="choice-imperial ${isSelected} p-5 rounded-2xl cursor-pointer flex items-center gap-4">
+                            <div class="w-6 h-6 rounded-full border-2 border-blue-500 flex items-center justify-center shrink-0">
+                                <div class="w-3 h-3 rounded-full bg-blue-400 ${isSelected ? '' : 'hidden'}"></div>
+                            </div>
+                            <span class="text-sm md:text-base font-bold text-white tracking-wide">${opt}</span>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            } else if(q.type === 'prime_choice') {
+                html += `<div class="grid grid-cols-4 sm:grid-cols-8 gap-3 px-1">`;
+                q.options.forEach((opt) => {
+                    const isSelected = userAnswers[q.key] === opt ? 'selected' : '';
+                    html += `
+                        <div onclick="selectChoice('${q.key}', '${opt}', this)" class="choice-imperial ${isSelected} py-5 px-3 rounded-2xl cursor-pointer text-center font-black text-xl md:text-2xl text-white shadow-lg">
+                            ${opt}
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            box.innerHTML = html;
+        }
+
+        function selectChoice(key, value, element) {
+            userAnswers[key] = value;
+            const parent = element.parentElement;
+            parent.querySelectorAll('.choice-imperial').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function nextQuestion() {
+            const q = questionsData[currentQuestionIndex];
+            
+            if(q.type === 'text') {
+                const inputVal = document.getElementById('answer-input').value.trim();
+                if(!inputVal) {
+                    showCustomAlert("⚠️ يرجى إجابة هذا السؤال أو ملء الحقل المطلوبة قبل الانتقال.");
+                    return;
+                }
+                userAnswers[q.key] = inputVal;
+            } else {
+                if(!userAnswers[q.key]) {
+                    showCustomAlert("⚠️ يرجى اختيار إجابة من الخيارات المتاحة للمتابعة.");
+                    return;
+                }
+            }
+
+            if(currentQuestionIndex < questionsData.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            } else {
+                submitNewApplication();
+            }
+        }
+
+        function prevQuestion() {
+            if(currentQuestionIndex > 0 && !usedBackward[currentQuestionIndex]) {
+                const q = questionsData[currentQuestionIndex];
+                if(q.type === 'text') {
+                    const inputVal = document.getElementById('answer-input');
+                    if(inputVal && inputVal.value.trim()) {
+                        userAnswers[q.key] = inputVal.value.trim();
+                    }
+                }
+                usedBackward[currentQuestionIndex] = true;
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        function submitNewApplication() {
+            const generatedId = 'MS-' + Math.floor(1000 + Math.random() * 9000);
+            const submissionData = {
+                id: generatedId,
+                date: new Date().toLocaleDateString('ar-EG'),
+                status: 'قيد المراجعة',
+                answers: {...userAnswers}
+            };
+
+            submissionsList.unshift(submissionData);
+            localStorage.setItem('monster_submissions', JSON.stringify(submissionsList));
+
+            hideAllViews();
+            document.getElementById('id-text-val').textContent = generatedId;
+            document.getElementById('view-success').classList.remove('hidden');
+        }
+
+        function copyAssignedId() {
+            const idText = document.getElementById('id-text-val').textContent;
+            navigator.clipboard.writeText(idText).then(() => {
+                const toast = document.getElementById('copy-toast');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            });
+        }
+
+        function showCustomAlert(msg) {
+            document.getElementById('custom-alert-text').textContent = msg;
+            document.getElementById('custom-alert-modal').classList.remove('hidden');
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('custom-alert-modal').classList.add('hidden');
+        }
+
+        function renderAdminSubmissions() {
+            const container = document.getElementById('admin-submissions-list');
+            const searchVal = document.getElementById('admin-search-input').value.trim().toLowerCase();
+            submissionsList = JSON.parse(localStorage.getItem('monster_submissions') || '[]');
+
+            const filteredList = submissionsList.filter(sub => {
+                const idMatch = sub.id.toLowerCase().includes(searchVal);
+                const nameMatch = (sub.answers.realName || '').toLowerCase().includes(searchVal);
+                const gameNameMatch = (sub.answers.gameName || '').toLowerCase().includes(searchVal);
+                return idMatch || nameMatch || gameNameMatch;
+            });
+
+            if(filteredList.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-blue-300 font-bold">
+                        <i class="fa-solid fa-folder-open text-4xl mb-3 text-blue-400"></i>
+                        <p class="text-sm">لا توجد نتائج مطابقة في السجلات الملكية.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            filteredList.forEach((sub) => {
+                const realIndex = submissionsList.findIndex(item => item.id === sub.id);
+                let badge = '';
+                if(sub.status === 'قيد المراجعة') badge = `<span class="bg-black text-blue-300 border border-blue-500/50 px-3 py-1 rounded-full text-[10px] font-bold">قيد المراجعة</span>`;
+                else if(sub.status === 'تم القبول') badge = `<span class="bg-blue-900 text-white border border-blue-400 px-3 py-1 rounded-full text-[10px] font-bold">مقبول</span>`;
+                else badge = `<span class="bg-black text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full text-[10px] font-bold">مرفوض</span>`;
+
+                html += `
+                    <div class="imperial-card border border-blue-500/40 p-5 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-3 flex-wrap">
+                                <button onclick="navigator.clipboard.writeText('${sub.id}'); showCopyToastMsg('تم نسخ الـ ID: ${sub.id}');" class="bg-blue-950/80 hover:bg-blue-900 text-blue-300 border border-blue-500/60 px-3 py-1 rounded-xl text-xs font-black tracking-wider transition flex items-center gap-1.5 shadow">
+                                    <span>${sub.id}</span> <i class="fa-regular fa-copy text-[10px]"></i>
+                                </button>
+                                <h4 class="text-lg font-black text-white">${sub.answers.realName || 'بدون اسم'} (${sub.answers.gameName || 'غير محدد'})</h4>
+                                ${badge}
+                            </div>
+                            <p class="text-xs text-blue-300/90 font-semibold">
+                                البلد: <span class="text-white">${sub.answers.country || '-'}</span> | 
+                                الليفل: <span class="text-white">${sub.answers.level || '-'}</span> | 
+                                برايم: <span class="text-blue-400 font-bold">${sub.answers.primeCam || '-'}</span>
+                            </p>
+                            <p class="text-[10px] text-blue-400 font-bold">تاريخ التقديم: ${sub.date}</p>
+                        </div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <button onclick="viewDetail(${realIndex})" class="bg-black hover:bg-blue-950 text-blue-200 border border-blue-500/60 px-3 py-2 rounded-xl text-xs font-bold transition shadow">
+                                <i class="fa-solid fa-eye ml-1"></i> عرض الإجابات والكود
+                            </button>
+                            <button onclick="updateSubStatus(${realIndex}, 'تم القبول')" class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-2 rounded-xl text-xs font-bold transition shadow border border-blue-400">
+                                <i class="fa-solid fa-check ml-1"></i> قبول
+                            </button>
+                            <button onclick="updateSubStatus(${realIndex}, 'تم الرفض')" class="bg-black hover:bg-blue-950 text-blue-300 border border-blue-500/40 px-3 py-2 rounded-xl text-xs font-bold transition shadow">
+                                <i class="fa-solid fa-xmark ml-1"></i> رفض
+                            </button>
+                            <button onclick="deleteSub(${realIndex})" class="bg-black hover:bg-blue-950 text-blue-400 px-3 py-2 rounded-xl text-xs transition border border-blue-900 font-bold">
+                                <i class="fa-solid fa-trash"></i> حذف
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function showCopyToastMsg(msg) {
+            const toast = document.getElementById('copy-toast');
+            toast.querySelector('span').textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        function viewDetail(index) {
+            const sub = submissionsList[index];
+            currentModalId = sub.id;
+            document.getElementById('modal-id-badge').textContent = sub.id;
+            const content = document.getElementById('admin-detail-content');
+            
+            let detailHtml = `
+                <div class="bg-black/80 p-4 rounded-2xl border border-blue-500/60 mb-4 flex justify-between items-center">
+                    <div>
+                        <span class="text-xs text-blue-400 block font-bold">كود العضوية الملكي (ID):</span>
+                        <span class="text-lg font-black text-white tracking-widest">${sub.id}</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-blue-400 block font-bold">حالة الطلب:</span>
+                        <span class="text-sm font-black text-blue-300">${sub.status}</span>
+                    </div>
+                </div>
+                <hr class="border-blue-950 my-3">
+            `;
+            
+            for (let key in sub.answers) {
+                const qObj = questionsData.find(q => q.key === key);
+                const qTitle = qObj ? qObj.title : key;
+                detailHtml += `<div class="mb-2.5 bg-black/40 p-3 rounded-xl border border-blue-950"><strong class="text-blue-300 block mb-1">${qTitle}</strong> <span class="text-white font-semibold">${sub.answers[key]}</span></div>`;
+            }
+            content.innerHTML = detailHtml;
+            document.getElementById('admin-detail-modal').classList.remove('hidden');
+        }
+
+        function copyModalId() {
+            navigator.clipboard.writeText(currentModalId).then(() => {
+                showCopyToastMsg(`تم نسخ كود اللاعب: ${currentModalId}`);
+            });
+        }
+
+        function closeAdminDetail() {
+            document.getElementById('admin-detail-modal').classList.add('hidden');
+        }
+
+        function updateSubStatus(index, status) {
+            submissionsList[index].status = status;
+            localStorage.setItem('monster_submissions', JSON.stringify(submissionsList));
+            renderAdminSubmissions();
+        }
+
+        function deleteSub(index) {
+            if(confirm('هل أنت متأكد من حذف هذا الطلب نهائياً من السجلات الملكية؟')) {
+                submissionsList.splice(index, 1);
+                localStorage.setItem('monster_submissions', JSON.stringify(submissionsList));
+                renderAdminSubmissions();
+            }
+        }
+    </script>
+</body>
+</html>
